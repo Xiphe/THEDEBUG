@@ -194,7 +194,7 @@ class ADEBUG extends X\Base {
 
 		switch ($this->variableType) {
 		case 'boolean':
-			$this->variable = '(boolean) '.self::$s_cDebug['var'] ? 'true' : 'false';
+			$this->variable = '(boolean) '.$this->variable ? 'true' : 'false';
 			break;
 		case 'NULL':
 			$this->variable = '(null) NULL';

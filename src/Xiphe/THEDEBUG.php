@@ -240,6 +240,7 @@ class THEDEBUG extends X\Base {
 		
 		/* Add a message so diebug can be called without arguments and still be found in the code */		
 		$debug->variable = 'Script got murdered by diebug.';
+		$debug->variableType = 'string';
 		$debug->name = '';
 		$debug->type = 'Info';
 		$debug->put();
@@ -321,6 +322,7 @@ class THEDEBUG extends X\Base {
 		/* Set the message, type and put */
 		$debug->variable = $message;
 		$debug->type = 'warning';
+		$debug->variableType = 'string';
 		$debug->put();
 
 		if ($debug->modus === 'FirePHP') {
