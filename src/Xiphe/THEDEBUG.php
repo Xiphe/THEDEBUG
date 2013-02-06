@@ -199,6 +199,10 @@ class THEDEBUG extends X\Base {
 			return;
 		}
 
+		if (self::$ensureByGet && !isset($_GET['debug'])) {
+			return;
+		}
+
 		$debug = new THEDEBUG\ADEBUG(func_get_args());
 		$debug->put();
 
@@ -260,6 +264,10 @@ class THEDEBUG extends X\Base {
 			return;
 		}
 
+		if (self::$ensureByGet && !isset($_GET['debug'])) {
+			return;
+		}
+
 		return new THEDEBUG\ADEBUG(func_get_args());
 	}
 
@@ -274,6 +282,10 @@ class THEDEBUG extends X\Base {
 	public static function deprecate($alternative = '', $continue = true)
 	{
 		if (!self::$_enabled) {
+			return;
+		}
+
+		if (self::$ensureByGet && !isset($_GET['debug'])) {
 			return;
 		}
 
@@ -330,6 +342,10 @@ class THEDEBUG extends X\Base {
 	 */
 	public static function count($message = '') {
 		if (!self::$_enabled) {
+			return;
+		}
+
+		if (self::$ensureByGet && !isset($_GET['debug'])) {
 			return;
 		}
 
