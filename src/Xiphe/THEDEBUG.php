@@ -114,6 +114,26 @@ class THEDEBUG extends X\Base {
 	}
 
 	/**
+	 * Enable THEDEBUG
+	 *
+	 * @return void
+	 */
+	public static function enable()
+	{
+		self::$_enabled = true;
+	}
+
+	/**
+	 * Disable THEDEBUG
+	 *
+	 * @return void
+	 */
+	public static function disable()
+	{
+		self::$_enabled = false;
+	}
+
+	/**
 	 * Get the color for inline debugs
 	 * 
 	 * @param  integer $nr   debug type
