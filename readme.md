@@ -24,10 +24,13 @@ and i will try to answer.
 ---------
 
 * **[FirePHP](http://www.firephp.org/)**
-
+* **[Chrome Logger](http://craig.is/writing/chrome-logger)
 
 Changelog
 ---------
+
+### 4.1
++ add ChromePHP
 
 ### 4.0
 + initiation as standalone package
