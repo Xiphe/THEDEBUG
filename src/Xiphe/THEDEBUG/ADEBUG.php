@@ -171,9 +171,15 @@ class ADEBUG extends X\Base {
 	 * @return void
 	 */
 	public function put() {
-		switch ($this->modus) {
-		case 'FirePHP':
-			$this->putFirePhp();
+		X\THEDEBUG::i()->doCallback('beforePut', array(&$this));
+		$this->doCallback('beforePut', array(&$this));
+
+		switch (strtolower($this->modus)) {
+		case 'firephp':
+			$this->putFirePHP();
+			break;
+		case 'chromephp':
+			$this->putChromePHP();
 			break;
 		default:
 			$this->putInline();
@@ -182,46 +188,42 @@ class ADEBUG extends X\Base {
 	}
 
 	/**
+	 * Pass the debug to ChromePHP
+	 * 
+	 * @return void
+	 */
+	public function putChromePHP() {
+		$ChromePHP = X\THEDEBUG::getChromePHP();
+		$ChromePHP->backtrace = $this->file.': '.$this->line;
+		$this->_improveVar();
+		$args = array();
+
+		if (!empty($this->name)) {
+			$args[] = $this->name.':';
+		}
+		$args[] = $this->variable;
+
+		call_user_func_array(
+			array(
+				$ChromePHP,
+				$this->_getMethod()
+			),
+			$args
+		);
+	}
+
+	/**
 	 * Pass the debug to firePHP
 	 * 
 	 * @return void
 	 */
-	public function putFirePhp() {
-		X\THEDEBUG::i()->doCallback('beforePut', array(&$this));
-		$this->doCallback('beforePut', array(&$this));
-
+	public function putFirePHP() {
 		$FirePHP = X\THEDEBUG::getFirePHP();
 
-		switch ($this->variableType) {
-		case 'boolean':
-			$this->variable = '(boolean) '.($this->variable ? 'true' : 'false');
-			break;
-		case 'NULL':
-			$this->variable = '(null) NULL';
-			break;
-		case 'string':
-			$this->variable = '"'.$this->variable.'"';
-		default:
-			break;
-		}
-
-		switch ($this->currentTypeKey()) {
-		case 2:
-			$method = 'info';
-			break;
-		case 3:
-			$method = 'warn';
-			break;
-		case 4:
-			$method = 'error';
-			break;
-		default:
-			$method = 'log';
-			break;
-		}
+		$this->_improveVar();
 
 		call_user_func_array(
-			array($FirePHP, $method),
+			array($FirePHP, $this->_getMethod()),
 			array(
 				$this->variable,
 				$this->name,
@@ -239,9 +241,6 @@ class ADEBUG extends X\Base {
 	 * @return void
 	 */
 	public function putInline() {
-		X\THEDEBUG::i()->doCallback('beforePut', array(&$this));
-		$this->doCallback('beforePut', array(&$this));
-
 		echo '<div style="font-family:sans-serif;text-align:left;border:1px solid ';
 		echo X\THEDEBUG::getColor($this->currentTypeKey(), 'b');
 		echo ';background:';
@@ -261,6 +260,47 @@ class ADEBUG extends X\Base {
 		}
 		var_dump($this->variable);
 		echo '</pre></div>';
+	}
+
+	/**
+	 * Convert the type-integer into method names
+	 * for FirePHP and ChromePHP
+	 *
+	 * @return string
+	 */
+	private function _getMethod()
+	{
+		switch ($this->currentTypeKey()) {
+		case 2:
+			return 'info';
+		case 3:
+			return 'warn';
+		case 4:
+			return 'error';
+		default:
+			return 'log';
+		}
+	}
+
+	/**
+	 * Make our variable more understandable.
+	 *
+	 * @return null
+	 */
+	private function _improveVar()
+	{
+		switch ($this->variableType) {
+		case 'boolean':
+			$this->variable = '(boolean) '.($this->variable ? 'true' : 'false');
+			break;
+		case 'NULL':
+			$this->variable = '(null) NULL';
+			break;
+		case 'string':
+			$this->variable = '"'.$this->variable.'"';
+		default:
+			break;
+		}
 	}
 
 	/**

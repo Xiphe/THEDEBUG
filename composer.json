@@ -13,8 +13,9 @@
         }
     ],
     "require": {
-        "xiphe/base": ">=1.0",
-        "firephp/firephp-core": "dev-master",
+        "xiphe/base": "~1.1",
+        "firephp/firephp-core": "~0.4",
+        "ccampbell/chromephp": "~4.0",
         "php": ">=5.3"
     },
     "autoload": {

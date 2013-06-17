@@ -1,7 +1,6 @@
 <?php
 namespace Xiphe;
 
-use Xiphe\THEMASTER\core as core;
 use Xiphe as X;
 
 /**
@@ -29,6 +28,13 @@ class THEDEBUG extends X\Base {
 	private static $_FirePHP;
 
 	/**
+	 * A global instance of ChromePHP
+	 * 
+	 * @var Xiphe\THEDEBUG\ChromePHP
+	 */
+	private static $_ChromePHP;
+
+	/**
 	 * Hold debug objects that will count how often they were called
 	 *
 	 * @var array
@@ -37,7 +43,7 @@ class THEDEBUG extends X\Base {
 
 	/**
 	 * The global modus, can be overwritten by an ADEBUG object
-	 * Accepts 'inline' or 'FirePHP' 
+	 * Accepts 'inline', 'ChromePHP' or 'FirePHP' 
 	 * 
 	 * 'mail' and 'summed' were removed by 4.0
 	 * 
@@ -170,6 +176,20 @@ class THEDEBUG extends X\Base {
 			self::$_FirePHP = \FirePHP::getInstance(true);
 		}
 		return self::$_FirePHP;		
+	}
+
+	/**
+	 * Retrieve an instance of ChromePHP
+	 *
+	 * @return Xiphe\THEDEBUG\ChromePHP
+	 */
+	public static function getChromePHP()
+	{
+		if (!isset(self::$_ChromePHP)) {
+			self::$_ChromePHP = X\THEDEBUG\ChromePhp::getInstance();
+		}
+
+		return self::$_ChromePHP;
 	}
 
 	/**
